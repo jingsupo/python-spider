@@ -50,10 +50,10 @@ class Tiebaspider(object):
             self.write_data(data, page)
 
 if __name__ == '__main__':
-    tie_name = raw_input('请输入贴吧名字：')
+    tieba_name = raw_input('请输入贴吧名字：')
     start_page = int(raw_input('开始页：'))
     end_page = int(raw_input('结束页：'))
 
-    spider = Tiebaspider(tie_name, start_page, end_page)
+    spider = Tiebaspider(tieba_name, start_page, end_page)
 
     spider.start_work()
