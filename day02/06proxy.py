@@ -11,7 +11,7 @@ def proxy_openner():
 
     # proxy = {'协议':'IP:port'}
     # 付费的代理 proxy = {"协议": "用户名:密码@IP:port"}
-    proxy = {"http":"mr_mao_hacker:sffqry9r@120.27.218.32:16816"}
+    proxy = {"http":"xxx:xxx@120.27.218.32:16816"}
     # 创建具有proxy功能的处理器
     handler = urllib2.ProxyHandler(proxy)
     openner = urllib2.build_opener(handler)

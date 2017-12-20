@@ -19,8 +19,8 @@ def send_request():
     login_url = "http://renren.com/PLogin.do"
 
     formdata = {
-        "email": "mr_mao_hacker@163.com",
-        "password": "alarmchime"
+        "email": "xxx@163.com",
+        "password": "xxx"
     }
 
     formdata_str = urllib.urlencode(formdata)
