@@ -32,11 +32,20 @@ class TencentSpider(scrapy.Spider):
 
             yield item
 
+        # 如果返回None，表示没有到最后一页
+        if not response.xpath('//a[@id="next" and @class="noactive"]/@href').extract_first():
+            next_link = 'http://hr.tencent.com/' + response.xpath('//a[@id="next"]/@href').extract_first()
+
+            yield scrapy.Request(next_link, callback=self.parse)
+
+        # 1.通过offset偏移量控制url地址
+        """
         # 当偏移量达到2680，表示到达最后一页，就不再发送请求
         if self.offset <= 2680:
             self.offset += 10
 
             yield scrapy.Request(self.base_url + str(self.offset), callback=self.parse)
+        """
 
     def parse_position(self, response):
         pass
