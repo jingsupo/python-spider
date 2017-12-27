@@ -14,7 +14,9 @@ class TencentSpider(scrapy.Spider):
     # url地址的偏移量，每次自增10
     offset = 0
     # 起始url地址列表
-    start_urls = [base_url + str(offset)]
+    # start_urls = [base_url + str(offset)]
+    # 将所有url放入start_urls，实现真正高并发
+    start_urls = [base_url + str(num) for num in range(0, 2681, 10)]
 
 
     def parse(self, response):
@@ -32,11 +34,14 @@ class TencentSpider(scrapy.Spider):
 
             yield item
 
+        # 2.通过获取下一页处理多页数据
+        """
         # 如果返回None，表示没有到最后一页
         if not response.xpath('//a[@id="next" and @class="noactive"]/@href').extract_first():
             next_link = 'http://hr.tencent.com/' + response.xpath('//a[@id="next"]/@href').extract_first()
 
             yield scrapy.Request(next_link, callback=self.parse)
+        """
 
         # 1.通过offset偏移量控制url地址
         """
