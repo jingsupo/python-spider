@@ -26,13 +26,17 @@ class TencentSpider(scrapy.Spider):
             item = TencentItem()
 
             item['position_name'] = node.xpath('./td[1]/a/text()').extract_first()
-            item['position_link'] = node.xpath('./td[1]/a/text()').extract_first()
+            item['position_link'] = 'http://hr.tencent.com/' + node.xpath('./td[1]/a/@href').extract_first()
             item['position_type'] = node.xpath('./td[2]/text()').extract_first()
             item['position_nums'] = node.xpath('./td[3]/text()').extract_first()
             item['work_location'] = node.xpath('./td[4]/text()').extract_first()
             item['publish_times'] = node.xpath('./td[5]/text()').extract_first()
 
-            yield item
+            # 发送每个职位详情页到请求，并指定回调函数处理响应
+            yield scrapy.Request(url=item['position_link'], meta={'item': item}, callback=self.parse_position)
+
+            # 每获取一条职位信息就将item对象提交给引擎，然后转交给管道处理
+            # yield item
 
         # 2.通过获取下一页处理多页数据
         """
@@ -53,4 +57,9 @@ class TencentSpider(scrapy.Spider):
         """
 
     def parse_position(self, response):
-        pass
+        item = response.meta['item']
+
+        item['position_duty'] = ''.join(response.xpath('//ul[@class="squareli"]')[0].xpath('./li/text()').extract())
+        item['position_requirement'] = ''.join(response.xpath('//ul[@class="squareli"]')[0].xpath('./li/text()').extract())
+
+        yield item
