@@ -35,8 +35,8 @@ class TencentSpider(scrapy.Spider):
         # 当偏移量达到2680，表示到达最后一页，就不再发送请求
         if self.offset <= 2680:
             self.offset += 10
-        
-        yield scrapy.Request(self.base_url + str(self.offset), callback=self.parse)
+
+            yield scrapy.Request(self.base_url + str(self.offset), callback=self.parse)
 
     def parse_position(self, response):
         pass
