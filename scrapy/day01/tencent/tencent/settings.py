@@ -67,6 +67,7 @@ ROBOTSTXT_OBEY = False
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    'tencent.pipelines.TencentPipeline': 300,
+   'tencent.pipelines.PositionPipeline': 400,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
