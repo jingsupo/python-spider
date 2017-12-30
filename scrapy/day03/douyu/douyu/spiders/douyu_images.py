@@ -3,7 +3,7 @@ import scrapy, json
 from douyu.items import DouyuItem
 
 
-class DouyuImgSpider(scrapy.Spider):
+class DouyuImagesSpider(scrapy.Spider):
     name = 'douyu_images'
     allowed_domains = ['douyucdn.cn']
     base_url = 'http://capi.douyucdn.cn/api/v1/getVerticalRoom?limit=20&offset='
