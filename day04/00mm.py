@@ -7,8 +7,19 @@ from lxml import etree
 
 class Mmspider(object):
     def __init__(self, start_page, end_page):
-        self.base_url = "https://www.meitulu.com/item/8686.html"
-        self.headers = {"User-Agent" : "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko"}
+        self.base_url = "https://www.meitulu.com/item/8686_10.html"
+        self.headers = {
+            # "Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+            # "Accept-Encoding":"gzip, deflate, br",
+            # "Accept-Language":"zh-CN,zh;q=0.9,en;q=0.8",
+            # "Cache-Control":"max-age=0",
+            # "Connection":"keep-alive",
+            # "Host":"www.meitulu.com",
+            # "If-None-Match":'W/"5a2db15c-3f32"',
+            "Referer":"https://www.meitulu.com/",
+            # "Upgrade-Insecure-Requests":"1",
+            "User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko"
+        }
         self.start = start_page
         self.end = end_page
 
@@ -28,7 +39,7 @@ class Mmspider(object):
     def write_file(self, data, page):
         print page
         filename = 'mm/' + page
-        with open(filename, 'w') as f:
+        with open(filename, 'wb') as f:
             f.write(data)
 
     # 解析数据
