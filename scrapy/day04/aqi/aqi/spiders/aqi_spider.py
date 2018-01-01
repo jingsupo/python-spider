@@ -38,7 +38,6 @@ class AqiSpider(scrapy.Spider):
             yield scrapy.Request(url=self.base_url + link, meta=response.meta, callback=self.parse_day)
 
     def parse_day(self, response):
-        print response.body
         """
             每个城市每一天的数据
         :param response:
@@ -47,7 +46,7 @@ class AqiSpider(scrapy.Spider):
         tr_list = response.xpath('//div[@class="row"]//tr')
         tr_list.pop(0)
         print '*'*30
-        print tr_list
+        print tr_list.extract()
 
         for tr in tr_list:
             item = AqiItem()
