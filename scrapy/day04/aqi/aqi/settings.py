@@ -66,7 +66,10 @@ DOWNLOADER_MIDDLEWARES = {
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'aqi.pipelines.AqiPipeline': 300,
+   'aqi.pipelines.AqiPipeline': 100,
+   'aqi.pipelines.AqiCsvPipeline': 300,
+   'aqi.pipelines.AqiJsonPipeline': 400,
+   'aqi.pipelines.AqiMongoPipeline': 500,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
