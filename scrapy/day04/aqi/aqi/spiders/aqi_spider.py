@@ -5,12 +5,12 @@ from aqi.items import AqiItem
 
 
 class AqiSpider(scrapy.Spider):
-    name =  'aqi_spider'
-    allowed_domains =  ['aqistudy.cn']
+    name = 'aqi_spider'
+    allowed_domains = ['aqistudy.cn']
 
-    base_url =  'https://www.aqistudy.cn/historydata/'
+    base_url = 'https://www.aqistudy.cn/historydata/'
 
-    start_urls =  [base_url]
+    start_urls = [base_url]
 
     def parse(self, response):
         """
@@ -18,11 +18,11 @@ class AqiSpider(scrapy.Spider):
         :param response:
         :return:
         """
-        link_list =  response.xpath('//div[@class= "all"]//li/a/@href').extract()
-        name_list =  response.xpath('//div[@class= "all"]//li/a/@href').extract()
+        link_list = response.xpath('//div[@class="all"]//li/a/@href').extract()
+        name_list = response.xpath('//div[@class="all"]//li/a/text()').extract()
 
-        for link, name in zip(link_list, name_list):
-            yield scrapy.Request(url= self.base_url + link, meta={'name': name}, callback= self.parse_month)
+        for link, name in zip(link_list, name_list)[10:11]:
+            yield scrapy.Request(url=self.base_url + link, meta={'name': name}, callback=self.parse_month)
 
     def parse_month(self, response):
         """
@@ -30,19 +30,24 @@ class AqiSpider(scrapy.Spider):
         :param response:
         :return:
         """
-        link_list =  response.xpath('//ul[@class= "unstyled"]//li/a/@href').extract()
+        link_list = response.xpath('//ul[@class="unstyled1"]//li/a/@href').extract()
 
-        for link in link_list:
-            yield scrapy.Request(url= self.base_url + link, meta=response.meta, callback= self.parse_day)
+        for link in link_list[20:21]:
+            print '*'*30
+            print self.base_url + link
+            yield scrapy.Request(url=self.base_url + link, meta=response.meta, callback=self.parse_day)
 
     def parse_day(self, response):
+        print response.body
         """
             每个城市每一天的数据
         :param response:
         :return:
         """
-        tr_list =  response.xpath('//div[@class= "row"]//tr')
+        tr_list = response.xpath('//div[@class="row"]//tr')
         tr_list.pop(0)
+        print '*'*30
+        print tr_list
 
         for tr in tr_list:
             item = AqiItem()

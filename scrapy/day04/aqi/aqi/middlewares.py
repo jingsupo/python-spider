@@ -18,6 +18,7 @@ class SeleniumMiddleware(object):
 
             driver.get(request.url)
             html = driver.page_source
+            # driver.quit()
 
             # 直接返回一个Response对象给引擎，引擎会把这个当作下载器返回的响应返回给Spider进行解析处理
             # 表示该请求不再通过下载器下载，而是通过Chrome渲染后再返回
