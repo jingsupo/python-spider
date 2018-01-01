@@ -9,6 +9,20 @@ import scrapy
 
 
 class AqiItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+    # 城市
+    city = scrapy.Field()
+
+    date = scrapy.Field()
+    aqi = scrapy.Field()
+    level = scrapy.Field()
+    pm2_5 = scrapy.Field()
+    pm10 = scrapy.Field()
+    so2 = scrapy.Field()
+    co = scrapy.Field()
+    no2 = scrapy.Field()
+    o3 = scrapy.Field()
+
+    # 抓取时间
+    crawl_time = scrapy.Field()
+    # 数据源
+    source = scrapy.Field()
