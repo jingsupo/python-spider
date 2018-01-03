@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-import requests, time
+import requests, time, os
 from lxml import etree
 
 
 class Mmspider(object):
     def __init__(self, start_page, end_page):
-        self.base_url = "https://www.meitulu.com/item/8686"
+        self.base_url = "https://www.meitulu.com/item/4746"
         self.offset = 2
 
         self.headers = {
@@ -28,6 +28,7 @@ class Mmspider(object):
 
         # 第一层解析 xpath
         self.first_xpath = '//img[@class="content_img"]/@src'
+        self.title = ''
 
     # 发送请求
     def send_request(self, url, params={}):
@@ -41,7 +42,7 @@ class Mmspider(object):
     # 写入文件
     def write_file(self, data, page):
         print page
-        filename = 'mm/' + page
+        filename = self.title + '/' + page
         with open(filename, 'wb') as f:
             f.write(data)
 
@@ -56,24 +57,32 @@ class Mmspider(object):
 
     # 调度运行
     def run(self):
-        for page in range(self.start, self.end + 1):
+        for _ in range(self.start, self.end + 1):
             if self.start == 1:
                 url = self.base_url + '.html'
                 self.start += 1
+                # 发送第一次请求
+                first_response = self.send_request(url)
+                # 解析获取帖子标题
+                self.title = self.parse_data(first_response, '//h1/text()')[0].encode('utf-8')
+                print self.title
+                if not os.path.exists(self.title):
+                    os.mkdir(self.title)
             else:
                 url = self.base_url + '_' + str(self.offset) + '.html'
                 self.offset += 1
-            # 发送第一次请求
-            first_response = self.send_request(url)
+                # 发送第一次请求
+                first_response = self.send_request(url)
+
             # 解析提取子链接 每一条单独的帖子
             first_data_list = self.parse_data(first_response, self.first_xpath)
             print first_data_list
-
+   
             # 发送图片请求 保存图片到本地
             for img_url in first_data_list:
                 # 发送请求
                 image_file = self.send_request(img_url)
-                # 截取图片链接后15位作为文件名
+                # 截取图片链接后6位作为文件名
                 page = img_url[-6:]
                 # 保存图片
                 self.write_file(image_file, page)
@@ -81,7 +90,7 @@ class Mmspider(object):
 
 if __name__ == '__main__':
     start_page = 1
-    end_page = 13
+    end_page = 21
 
     spider = Mmspider(start_page, end_page)
     spider.run()
