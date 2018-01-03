@@ -7,7 +7,9 @@ from lxml import etree
 
 class Mmspider(object):
     def __init__(self, start_page, end_page):
-        self.base_url = "https://www.meitulu.com/item/8686_10.html"
+        self.base_url = "https://www.meitulu.com/item/8686"
+        self.offset = 2
+
         self.headers = {
             # "Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
             # "Accept-Encoding":"gzip, deflate, br",
@@ -20,6 +22,7 @@ class Mmspider(object):
             # "Upgrade-Insecure-Requests":"1",
             "User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko"
         }
+
         self.start = start_page
         self.end = end_page
 
@@ -54,9 +57,14 @@ class Mmspider(object):
     # 调度运行
     def run(self):
         for page in range(self.start, self.end + 1):
-
+            if self.start == 1:
+                url = self.base_url + '.html'
+                self.start += 1
+            else:
+                url = self.base_url + '_' + str(self.offset) + '.html'
+                self.offset += 1
             # 发送第一次请求
-            first_response = self.send_request(self.base_url)
+            first_response = self.send_request(url)
             # 解析提取子链接 每一条单独的帖子
             first_data_list = self.parse_data(first_response, self.first_xpath)
             print first_data_list
@@ -73,7 +81,7 @@ class Mmspider(object):
 
 if __name__ == '__main__':
     start_page = 1
-    end_page = 1
+    end_page = 13
 
     spider = Mmspider(start_page, end_page)
     spider.run()
