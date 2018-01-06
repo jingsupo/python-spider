@@ -7,7 +7,7 @@ from lxml import etree
 
 class Mmspider(object):
     def __init__(self, start_page, end_page):
-        self.base_url = "https://www.meitulu.com/item/4746"
+        self.base_url = "https://www.meitulu.com/item/293"
         self.offset = 2
 
         self.headers = {
@@ -57,6 +57,8 @@ class Mmspider(object):
 
     # 调度运行
     def run(self):
+        start_time = time.time()
+
         for _ in range(self.start, self.end + 1):
             if self.start == 1:
                 url = self.base_url + '.html'
@@ -83,14 +85,20 @@ class Mmspider(object):
                 # 发送请求
                 image_file = self.send_request(img_url)
                 # 截取图片链接后6位作为文件名
-                page = img_url[-6:]
+                page = img_url.split('/')[-1]
                 # 保存图片
                 self.write_file(image_file, page)
+
+        end_time = time.time()
+
+        total_time = end_time - start_time
+
+        print '总时间%ss' % total_time
 
 
 if __name__ == '__main__':
     start_page = 1
-    end_page = 21
+    end_page = 17
 
     spider = Mmspider(start_page, end_page)
     spider.run()
